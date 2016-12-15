@@ -1,3 +1,17 @@
+// Import Node's HTTPS API.
+var https = require('https');
+// Import Node's file system API.
+var fs = require('fs');
+var path = require('path');
+// Read in the private key
+// __dirname is a magic variable that contains
+// the directory that contains server.js. path.join
+// joins two file paths together.
+var privateKey = fs.readFileSync(path.join(__dirname, 'key.pem'));
+// Read in the certificate, which contains the
+// public key and signature
+var certificate = fs.readFileSync(path.join(__dirname, 'key.crt'));
+
 // Imports the express Node module.
 var express = require('express');
 // Creates an Express server.
@@ -764,10 +778,7 @@ bcrypt.hash(password, 10, function(err, hash) {
        });
      });
   }
-
-
 });
-
 });
 
 
@@ -843,8 +854,9 @@ bcrypt.compare(pw, user.password, function(err, success) {
     }
   });
 
-  // Starts the server on port 3000!
-  app.listen(3000, function () {
+  // Starts an https server on port 3000!
+  https.createServer({key: privateKey, cert: certificate},
+                     app).listen(3000, function () {
     console.log('Example app listening on port 3000!');
   });
 });

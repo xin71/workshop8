@@ -1,5 +1,6 @@
 import {getToken,updateCredentials} from './credentials';
 
+
 /**
  * Properly configure+send an XMLHttpRequest with error handling, authorization token,
  * and other needed properties.
